@@ -33,6 +33,21 @@ fn get_available_sounds() -> Vec<&'static str> {
     services::sound_service::available_sounds()
 }
 
+#[tauri::command]
+fn get_next_quiz() -> Option<services::spaced_repetition::QuizQuestion> {
+    services::spaced_repetition::next_quiz()
+}
+
+#[tauri::command]
+fn submit_quiz_answer(item_id: String, answer: String) -> Option<services::spaced_repetition::QuizResult> {
+    services::spaced_repetition::submit_answer(&item_id, &answer)
+}
+
+#[tauri::command]
+fn get_review_stats() -> services::spaced_repetition::ReviewStats {
+    services::spaced_repetition::get_stats()
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     env_logger::init();
@@ -53,6 +68,9 @@ pub fn run() {
             get_level_info,
             preview_sound,
             get_available_sounds,
+            get_next_quiz,
+            submit_quiz_answer,
+            get_review_stats,
         ])
         .setup(move |app| {
             let handle = app.handle().clone();

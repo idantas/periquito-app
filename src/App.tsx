@@ -5,6 +5,7 @@ import NotchLayout from "./components/NotchLayout";
 import ChatTip from "./components/ChatTip";
 import StatsView from "./components/StatsView";
 import SettingsView from "./components/SettingsView";
+import QuizView from "./components/QuizView";
 
 interface PeriquitoState {
   task: string;
@@ -31,7 +32,7 @@ interface TipsPayload {
   all_tips: EnglishTip[];
 }
 
-type Tab = "tips" | "stats" | "settings";
+type Tab = "tips" | "stats" | "quiz" | "settings";
 
 const DEFAULT_STATE: PeriquitoState = { task: "idle", emotion: "neutral" };
 
@@ -115,6 +116,11 @@ function App() {
             onClick={() => setActiveTab("stats")}
           />
           <TabButton
+            label="Quiz"
+            active={activeTab === "quiz"}
+            onClick={() => setActiveTab("quiz")}
+          />
+          <TabButton
             label="Settings"
             active={activeTab === "settings"}
             onClick={() => setActiveTab("settings")}
@@ -158,6 +164,8 @@ function App() {
           )
         ) : activeTab === "stats" ? (
           <StatsView />
+        ) : activeTab === "quiz" ? (
+          <QuizView />
         ) : (
           <SettingsView />
         )}

@@ -71,3 +71,52 @@ export async function previewSound(name: string): Promise<void> {
 export async function getAvailableSounds(): Promise<string[]> {
   return invoke<string[]>("get_available_sounds");
 }
+
+export interface QuizItem {
+  id: string;
+  incorrectSentence: string;
+  correctSentence: string;
+  explanation: string;
+  category: string;
+  box: number;
+  nextReviewDate: string;
+  totalReviews: number;
+  correctCount: number;
+}
+
+export interface QuizQuestion {
+  item: QuizItem;
+  options: string[];
+}
+
+export interface QuizResult {
+  correct: boolean;
+  correctAnswer: string;
+  explanation: string;
+  leitnerBox: number;
+  correctCount: number;
+}
+
+export interface ReviewStats {
+  totalItems: number;
+  dueCount: number;
+  masteredCount: number;
+}
+
+export async function getNextQuiz(): Promise<QuizQuestion | null> {
+  return invoke<QuizQuestion | null>("get_next_quiz");
+}
+
+export async function submitQuizAnswer(
+  itemId: string,
+  answer: string
+): Promise<QuizResult | null> {
+  return invoke<QuizResult | null>("submit_quiz_answer", {
+    itemId,
+    answer,
+  });
+}
+
+export async function getReviewStats(): Promise<ReviewStats> {
+  return invoke<ReviewStats>("get_review_stats");
+}
