@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicedoc/tauri-schema/refs/heads/main/tauri.conf.schema.json",
+  "identifier": "default",
+  "description": "Default capability for Periquito",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-spawn",
+    "shell:allow-execute",
+    "core:window:allow-set-position",
+    "core:window:allow-set-size",
+    "core:window:allow-set-ignore-cursor-events",
+    "core:window:allow-set-always-on-top",
+    "core:window:allow-show",
+    "core:window:allow-hide"
+  ]
+}
