@@ -23,6 +23,16 @@ fn get_level_info() -> services::level_manager::LevelInfo {
     services::level_manager::get_info()
 }
 
+#[tauri::command]
+fn preview_sound(name: String) {
+    services::sound_service::play(&name);
+}
+
+#[tauri::command]
+fn get_available_sounds() -> Vec<&'static str> {
+    services::sound_service::available_sounds()
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     env_logger::init();
@@ -41,6 +51,8 @@ pub fn run() {
             get_notch_geometry,
             get_history_stats,
             get_level_info,
+            preview_sound,
+            get_available_sounds,
         ])
         .setup(move |app| {
             let handle = app.handle().clone();

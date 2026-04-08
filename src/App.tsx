@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import NotchLayout from "./components/NotchLayout";
 import ChatTip from "./components/ChatTip";
 import StatsView from "./components/StatsView";
+import SettingsView from "./components/SettingsView";
 
 interface PeriquitoState {
   task: string;
@@ -30,7 +31,7 @@ interface TipsPayload {
   all_tips: EnglishTip[];
 }
 
-type Tab = "tips" | "stats";
+type Tab = "tips" | "stats" | "settings";
 
 const DEFAULT_STATE: PeriquitoState = { task: "idle", emotion: "neutral" };
 
@@ -113,6 +114,11 @@ function App() {
             active={activeTab === "stats"}
             onClick={() => setActiveTab("stats")}
           />
+          <TabButton
+            label="Settings"
+            active={activeTab === "settings"}
+            onClick={() => setActiveTab("settings")}
+          />
           <div style={{ flex: 1 }} />
           <span
             style={{
@@ -150,8 +156,10 @@ function App() {
                 : "Waiting for Claude Code sessions..."}
             </div>
           )
-        ) : (
+        ) : activeTab === "stats" ? (
           <StatsView />
+        ) : (
+          <SettingsView />
         )}
       </div>
     </NotchLayout>

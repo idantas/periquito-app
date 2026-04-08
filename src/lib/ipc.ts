@@ -48,3 +48,26 @@ export interface LevelInfo {
 export async function getLevelInfo(): Promise<LevelInfo> {
   return invoke<LevelInfo>("get_level_info");
 }
+
+export interface AppSettings {
+  notification_sound: string;
+  is_muted: boolean;
+  font_size: string;
+  is_usage_enabled: boolean;
+}
+
+export async function getSettings(): Promise<AppSettings> {
+  return invoke<AppSettings>("get_settings");
+}
+
+export async function updateSettings(settings: AppSettings): Promise<void> {
+  return invoke<void>("update_settings", { settings });
+}
+
+export async function previewSound(name: string): Promise<void> {
+  return invoke<void>("preview_sound", { name });
+}
+
+export async function getAvailableSounds(): Promise<string[]> {
+  return invoke<string[]>("get_available_sounds");
+}

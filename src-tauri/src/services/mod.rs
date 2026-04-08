@@ -6,3 +6,4 @@ pub mod emotion_analyzer;
 pub mod history_stats;
 pub mod hook_installer;
 pub mod level_manager;
+pub mod sound_service;

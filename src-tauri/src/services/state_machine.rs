@@ -84,11 +84,12 @@ pub fn start(
                                 session.is_analyzing_english = false;
                             }
 
-                            // Increment XP based on tip type
+                            // Increment XP and play sound
                             if result.tip_type == "good" || result.tip_type == "correction" {
                                 let stats = super::history_stats::load();
                                 let accuracy = stats.accuracy.unwrap_or(0);
                                 super::level_manager::add_xp(&result.tip_type, accuracy);
+                                super::sound_service::play_for_tip(&result.tip_type);
                             }
                         }
 
