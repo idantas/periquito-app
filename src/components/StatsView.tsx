@@ -32,6 +32,8 @@ export default function StatsView() {
   const accuracy = stats.accuracy ?? 0;
   const accuracyColor =
     accuracy >= 70 ? "#4ade80" : accuracy >= 40 ? "#fbbf24" : "#f87171";
+  const todayQualifies = stats.todayCount >= stats.dailyMinimum;
+  const isNewBest = stats.currentStreak > 0 && stats.currentStreak >= stats.bestStreak;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -90,9 +92,65 @@ export default function StatsView() {
         )}
       </div>
 
+      {/* Streak card */}
+      <div
+        style={{
+          background: "rgba(255,255,255,0.05)",
+          borderRadius: 12,
+          padding: "12px 14px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {/* Current streak */}
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 22, fontWeight: 700, color: stats.currentStreak > 0 ? "#fbbf24" : "rgba(255,255,255,0.3)" }}>
+              {stats.currentStreak > 0 ? `🔥 ${stats.currentStreak}` : "0"}
+            </div>
+            <div style={{ fontSize: 9, opacity: 0.4, marginTop: 2 }}>
+              {stats.currentStreak === 1 ? "day" : "days"}
+            </div>
+          </div>
+
+          {/* Best streak */}
+          <div style={{ textAlign: "center", opacity: 0.5 }}>
+            <div style={{ fontSize: 14, fontWeight: 600 }}>
+              ⭐ {stats.bestStreak}
+            </div>
+            <div style={{ fontSize: 9, opacity: 0.6 }}>best</div>
+          </div>
+
+          {isNewBest && (
+            <span
+              style={{
+                fontSize: 9,
+                fontWeight: 700,
+                color: "#fbbf24",
+                background: "rgba(251, 191, 36, 0.15)",
+                padding: "2px 6px",
+                borderRadius: 4,
+              }}
+            >
+              New best!
+            </span>
+          )}
+        </div>
+
+        {/* Today progress */}
+        <div style={{ textAlign: "right" }}>
+          <div style={{ fontSize: 11, color: todayQualifies ? "#4ade80" : "rgba(255,255,255,0.5)" }}>
+            {todayQualifies
+              ? "✓ Today counts!"
+              : `${stats.todayCount}/${stats.dailyMinimum} today`}
+          </div>
+        </div>
+      </div>
+
       {/* Accuracy + counters */}
       <div style={{ display: "flex", gap: 8 }}>
-        {/* Accuracy ring */}
+        {/* Accuracy */}
         <div
           style={{
             flex: 1,
@@ -117,9 +175,9 @@ export default function StatsView() {
           <div style={{ fontSize: 10, opacity: 0.5, marginTop: 4 }}>
             accuracy
           </div>
-          {stats.rolling_accuracy != null && (
+          {stats.rollingAccuracy != null && (
             <div style={{ fontSize: 10, opacity: 0.4, marginTop: 2 }}>
-              last 50: {stats.rolling_accuracy}%
+              last 50: {stats.rollingAccuracy}%
             </div>
           )}
         </div>
@@ -128,17 +186,17 @@ export default function StatsView() {
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
           <CounterCard
             label="evaluated"
-            value={stats.total_evaluated}
+            value={stats.totalEvaluated}
             color="rgba(255,255,255,0.7)"
           />
           <CounterCard
             label="good"
-            value={stats.total_good}
+            value={stats.totalGood}
             color="#4ade80"
           />
           <CounterCard
             label="corrections"
-            value={stats.total_corrections}
+            value={stats.totalCorrections}
             color="#fbbf24"
           />
         </div>

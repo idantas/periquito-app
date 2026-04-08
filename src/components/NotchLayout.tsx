@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, type ReactNode } from "react";
 import GrassIsland from "./GrassIsland";
 import SessionSprite from "./SessionSprite";
-import { getNotchGeometry, type NotchGeometry } from "../lib/ipc";
+import { getNotchGeometry, getHistoryStats, type NotchGeometry } from "../lib/ipc";
 
 interface PeriquitoState {
   task: string;
@@ -20,10 +20,16 @@ export default function NotchLayout({ state, children }: NotchLayoutProps) {
   const [geometry, setGeometry] = useState<NotchGeometry | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
+  const [streak, setStreak] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getNotchGeometry().then(setGeometry);
+    getHistoryStats().then((s) => setStreak(s.currentStreak));
+    const interval = setInterval(() => {
+      getHistoryStats().then((s) => setStreak(s.currentStreak));
+    }, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   // Click outside to collapse
@@ -106,8 +112,23 @@ export default function NotchLayout({ state, children }: NotchLayoutProps) {
             pointerEvents: isExpanded ? "none" : "auto",
           }}
         >
+          {/* Streak badge (left side) */}
+          {streak > 0 && (
+            <div
+              style={{
+                fontSize: 9,
+                fontWeight: 700,
+                color: "#fbbf24",
+                opacity: 0.8,
+                paddingLeft: 6,
+                whiteSpace: "nowrap",
+              }}
+            >
+              🔥{streak}
+            </div>
+          )}
           {/* Leave space for the actual notch */}
-          <div style={{ width: notchW - 12, flexShrink: 0 }} />
+          <div style={{ flex: 1 }} />
           <div style={{ width: sideWidth, display: "flex", justifyContent: "center" }}>
             <SessionSprite state={state} containerWidth={sideWidth} />
           </div>

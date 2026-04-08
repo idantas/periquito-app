@@ -24,11 +24,15 @@ export async function isHooksInstalled(): Promise<boolean> {
 }
 
 export interface HistoryStats {
-  total_good: number;
-  total_corrections: number;
-  total_evaluated: number;
+  totalGood: number;
+  totalCorrections: number;
+  totalEvaluated: number;
   accuracy: number | null;
-  rolling_accuracy: number | null;
+  rollingAccuracy: number | null;
+  currentStreak: number;
+  bestStreak: number;
+  todayCount: number;
+  dailyMinimum: number;
 }
 
 export async function getHistoryStats(): Promise<HistoryStats> {
