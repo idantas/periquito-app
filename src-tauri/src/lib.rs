@@ -82,7 +82,10 @@ pub fn run() {
             services::socket_server::start(tx);
 
             // Start state machine
-            services::state_machine::start(handle, store, rx);
+            services::state_machine::start(handle.clone(), store, rx);
+
+            // Start idle detector (quiz triggers on procrastination)
+            services::idle_detector::start(handle);
 
             Ok(())
         })

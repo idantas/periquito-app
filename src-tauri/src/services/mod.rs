@@ -9,3 +9,5 @@ pub mod level_manager;
 pub mod sound_service;
 pub mod distractor_engine;
 pub mod spaced_repetition;
+pub mod focus_detector;
+pub mod idle_detector;

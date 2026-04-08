@@ -57,9 +57,15 @@ function App() {
       setTips(event.payload.all_tips);
     });
 
+    // Quiz trigger from idle detector
+    const unlistenQuiz = listen("quiz-trigger", () => {
+      setActiveTab("quiz");
+    });
+
     return () => {
       unlistenState.then((f) => f());
       unlistenTips.then((f) => f());
+      unlistenQuiz.then((f) => f());
     };
   }, []);
 
